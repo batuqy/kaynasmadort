@@ -39,13 +39,5 @@ public class diceRoll
         }
     }
 
-    public int TotalValue()
-    {
-        int v = 0;
-        for (int i = 0; i < dice.Count; i++)
-        {
-            v += dice[i].rollValue;
-        }
-        return v;
-    }
+    
 }

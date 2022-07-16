@@ -7,20 +7,21 @@ using System;
 public class RollTest : MonoBehaviour
 {
     [SerializeField] List<TextMeshProUGUI> texts;
-    [SerializeField] TextMeshProUGUI totalValue;
+    public scriptableDice sideValue;
     diceRoll diceRoll;
-
     private void Start()
     {
+        
         diceRoll = new diceRoll();
         for (int i = 0; i < 5; i++)
         {
-            diceRoll.AddDice(6);
+            diceRoll.AddDice(sideValue.sideValue);
         }
         
     }
     public void Roll()
     {
+        
         diceRoll.Roll();
 
         UpdateText();
@@ -35,6 +36,6 @@ public class RollTest : MonoBehaviour
                 texts[i].text = diceRoll.dice[i].rollValue.ToString();
             }
         }
-        totalValue.text = diceRoll.TotalValue().ToString();
+       
     }
 }
