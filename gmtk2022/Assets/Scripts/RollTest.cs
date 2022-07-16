@@ -8,17 +8,16 @@ public class RollTest : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI texts;
     [SerializeField] TextMeshProUGUI totalValue;
-    public scriptableDice sideValue;
     public int sides;
     public int rollValue;
-    public void Rolldice()
+    public static int toplam;
+    public void setRandomtoRollValue()
     {
         rollValue = UnityEngine.Random.Range(1, sides + 1);
     }
-    public static int toplam;
     public void Roll()
     {
-        Rolldice();
+        setRandomtoRollValue();
         TotalValue();
         UpdateText();
     }
