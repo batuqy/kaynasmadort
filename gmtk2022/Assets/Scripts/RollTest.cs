@@ -6,36 +6,28 @@ using System;
 
 public class RollTest : MonoBehaviour
 {
-    [SerializeField] List<TextMeshProUGUI> texts;
+    [SerializeField] TextMeshProUGUI texts;
+    [SerializeField] TextMeshProUGUI totalValue;
     public scriptableDice sideValue;
     diceRoll diceRoll;
+    
+
     private void Start()
     {
-        
-        diceRoll = new diceRoll();
-        for (int i = 0; i < 5; i++)
-        {
-            diceRoll.AddDice(sideValue.sideValue);
-        }
-        
+    diceRoll = new diceRoll(sideValue.sideValue);
     }
     public void Roll()
     {
         
         diceRoll.Roll();
-
         UpdateText();
     }
 
+   
+
     private void UpdateText()
     {
-        for (int i = 0; i < texts.Count; i++)
-        {
-            if (i <diceRoll.dice.Count)
-            {
-                texts[i].text = diceRoll.dice[i].rollValue.ToString();
-            }
-        }
-       
+     texts.text = diceRoll.dice.rollValue.ToString();
+        totalValue.text = (diceRoll.toplam).ToString();
     }
 }
