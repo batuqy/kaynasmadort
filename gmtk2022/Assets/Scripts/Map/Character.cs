@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public GameObject 1,2,3,4,5,6;
+    public GameObject line1,line2,line3,line4,line5,line6;
     void Start()
     {
         
