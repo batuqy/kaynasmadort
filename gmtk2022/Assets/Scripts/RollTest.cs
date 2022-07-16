@@ -9,25 +9,28 @@ public class RollTest : MonoBehaviour
     [SerializeField] TextMeshProUGUI texts;
     [SerializeField] TextMeshProUGUI totalValue;
     public scriptableDice sideValue;
-    diceRoll diceRoll;
-    
-
-    private void Start()
+    public int sides;
+    public int rollValue;
+    public void Rolldice()
     {
-    diceRoll = new diceRoll(sideValue.sideValue);
+        rollValue = UnityEngine.Random.Range(1, sides + 1);
     }
+    public static int toplam;
     public void Roll()
     {
-        
-        diceRoll.Roll();
+        Rolldice();
+        TotalValue();
         UpdateText();
     }
-
-   
-
+    public int TotalValue()
+    {
+        toplam += rollValue;
+        Debug.Log(toplam);
+        return toplam;
+    }
     private void UpdateText()
     {
-     texts.text = diceRoll.dice.rollValue.ToString();
-        totalValue.text = (diceRoll.toplam).ToString();
+     texts.text =rollValue.ToString();
+     totalValue.text = (toplam).ToString();
     }
 }
