@@ -4,27 +4,35 @@ using UnityEngine;
 
 public class surukleme : MonoBehaviour
 {
-    private Vector3 mOffset;
-    private float mZCoord;
-    void OnMouseDown()
+    private bool isDragging;
+    private Vector2 basePosition;
+    private void Start()
     {
-        mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-        // Store offset = gameobject world pos - mouse world pos
-        mOffset = gameObject.transform.position - GetMouseAsWorldPoint();
+        basePosition = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
+    }
+    public void OnMouseDown()
+    {
+        isDragging = true;
     }
 
-    private Vector3 GetMouseAsWorldPoint()
+    public void OnMouseUp()
     {
-        // Pixel coordinates of mouse (x,y)
-        Vector3 mousePoint = Input.mousePosition;
-        // z coordinate of game object on screen
-        mousePoint.z = mZCoord;
-        // Convert it to world points
-        return Camera.main.ScreenToWorldPoint(mousePoint);
+        isDragging = false;
+        this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
     }
 
-    void OnMouseDrag()
+    private void Update()
     {
-        transform.position = GetMouseAsWorldPoint() + mOffset;
+        if (isDragging)
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            transform.Translate(mousePosition);
+        }
+        if(this.gameObject.transform.position.y <= -10f)
+        {
+            this.GetComponent<Rigidbody2D>().gravityScale = 0;
+            this.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            this.transform.position = basePosition;
+        }
     }
 }
