@@ -5,9 +5,9 @@ using UnityEngine;
 public class mapping : MonoBehaviour
 {
     public GameObject nesne;
+    public static float row, column;
     void Start()
     {
-        float row, column;
         row = Random.Range(1, 21);
         column = Random.Range(1, 21);
         Instantiate(nesne);
