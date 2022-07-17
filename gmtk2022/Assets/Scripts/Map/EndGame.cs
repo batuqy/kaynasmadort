@@ -15,7 +15,7 @@ public class EndGame : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             if(kazandin == true)
             {
