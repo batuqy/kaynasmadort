@@ -1,147 +1,90 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using TMPro;
-using System;
 
 public class RollTest : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI texts;
-    [SerializeField] TextMeshProUGUI[] textsOndice;
-    [SerializeField] TextMeshProUGUI totalValue;
-    public int sides;
-    public int rollValue;
-    public static int toplam;
-    private static int x=20;
-    private static int kont;
-
-    private float y;
-    public GameObject enableGameObject;
-    public void setRandomtoRollValue()
+    private int _x;
+    public int X 
     {
-        rollValue = UnityEngine.Random.Range(1, sides + 1);
-    }
-
-    public void Roll()
+        get 
+        {
+            return _x;
+        }
+        set
+        {
+            _x = value;
+            PlayerPrefs.SetInt("x",_x);
+        }
+    } 
+    private int _y;
+    public int Y 
     {
-        
-        if (toplam < 20 )
+        get 
         {
-
-            if (sides > x)
-            {
-                if (sides > x)
-                {
-                    for (int i = 6; i < 0; i--)
-                    {
-                        kont = toplam + sides;
-                        if (kont < 20)
-                        {
-                            textsOndice[i].text = "X";
-                        }
-                    }
-                }
-            }
-            else
-            {
-                enableGameObject.SetActive(true);
-                setRandomtoRollValue();
-                x = x - rollValue;
-
-                TotalValue();
-                UpdateText();
-            }
+            return _y;
         }
-        else
+        set
         {
-            if (sides > x)
-            {
-                for (int i = 6; i < 0; i--)
-                {
-                    kont = toplam + sides;
-                    if (kont < 20)
-                    {
-                        textsOndice[i].text = "X";
-                    }
-                }
-            }
-        }
-        if (sides > x)
-        {
-            for (int i = 6; i < 0; i--)
-            {
-                kont = toplam + sides;
-                if (kont < 20)
-                {
-                    textsOndice[i].text = "X";
-                }
-            }
+            _y = value;
+            PlayerPrefs.SetInt("y",_y);
         }
     }
-    public void FixedUpdate()
+    [SerializeField] private int _currentRandomNumber;
+    [SerializeField] private int _total;
+    [SerializeField] private TMP_Text _riceText;
+    [SerializeField] private TMP_Text _currentText;
+    [SerializeField] private int _buttonCount;
+
+    private void Update()
     {
-        if (sides > x)
-        {
-            kont = toplam + sides;
-            if (kont < 21)
-            {
-                for (int i = 6; i < 0; i--)
-                {
-                    textsOndice[i].text = "X";
-                }
-            }
-                
-        }
-    
-    }
-    public int TotalValue()
-    {
-        toplam += rollValue;
-        return toplam;
-    }
-    private void UpdateText()
-    {
-     texts.text =rollValue.ToString();
-     totalValue.text = (toplam).ToString();
+        _riceText.text = $"X: {X} | Y: {Y}";
     }
 
-
-    public static float xD = 1;
-    public static float yD = 1;
-    private static float tapCounter = 0;
-    int[] xyz = new int[] { 4, 6, 8, 10, 12, 20 };
-    [SerializeField] TextMeshProUGUI textXd;
-    [SerializeField] TextMeshProUGUI textYd;
-
-    public void giveDirectionNumber()
+    public void SetRoll()
     {
-        if (tapCounter == 0)
+        _buttonCount += 1;
+        switch(_buttonCount)
         {
-            xD = RollTest.toplam;
-            tapCounter++;
-            textXd.text = xD.ToString();
-            toplam = 0;
-            totalValue.text = (toplam).ToString();
-            x = 20;
-            for (int i = 0; i<6 ; i++)
-            {
-                    textsOndice[i].text = xyz[i].ToString();
-            }
-            
+            case 1:
+                X = _total;
+                _total = 0;
+                break;
+            case 2:
+                Y = _total;
+                _total = 0;
+                break;
+            case 3:
+                // Sahne geçişi
+                break;
         }
-        else if (tapCounter == 1)
+    }
+
+    public void OnRoll()
+    {
+        if(X == 0)
         {
-            tapCounter++;
-            yD = RollTest.toplam;
-            textYd.text = yD.ToString();
-            toplam = 0;
-            totalValue.text = (toplam).ToString();
-            x = 20;
-            for (int i = 0; i < 6; i++)
+            _currentRandomNumber = Random.Range(1,System.Convert.ToInt32(EventSystem.current.currentSelectedGameObject.name));
+            _total = _total + _currentRandomNumber <= 20 ? _total += _currentRandomNumber : X = _total;
+            if(X != 0)
             {
-                textsOndice[i].text = xyz[i].ToString();
+                _buttonCount += 1;
+                _total = 0;
             }
         }
+        else if(Y == 0)
+        {
+            _currentRandomNumber = Random.Range(1,System.Convert.ToInt32(EventSystem.current.currentSelectedGameObject.name));
+            _total = _total + _currentRandomNumber <= 20 ? _total += _currentRandomNumber : Y = _total;
+            if(Y != 0)
+            {
+                _buttonCount += 1;
+                _total = 0;
+            }
+        }
+        _currentText.text = $"X : {System.Convert.ToString(_buttonCount == 0 ? _total : X)} | Y : {System.Convert.ToString(_buttonCount == 1 ? _total : Y)}";
     }
 }
 

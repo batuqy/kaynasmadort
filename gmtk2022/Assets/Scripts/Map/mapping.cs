@@ -8,6 +8,8 @@ public class mapping : MonoBehaviour
     public static float row, column;
     void Start()
     {
+        Debug.Log(PlayerPrefs.GetFloat("xD"));
+        Debug.Log(PlayerPrefs.GetFloat("yD"));
         row = Random.Range(1, 21);
         column = Random.Range(1, 21);
         Instantiate(nesne);
