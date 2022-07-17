@@ -8,10 +8,10 @@ public class mapping : MonoBehaviour
     void Start()
     {
         float row, column;
-        row = Random.Range(1, 7);
-        column = Random.Range(-2, 4);
+        row = Random.Range(1, 21);
+        column = Random.Range(1, 21);
         Instantiate(nesne);
-        nesne.transform.position = new Vector2(row - 6.5f, column-0.5f);
+        nesne.transform.position = new Vector2(row * 0.25f - 3.625f, 4.375f - column * 0.25f);
     }
 
     void Update()
