@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class RollTest : MonoBehaviour
+public class Dice : MonoBehaviour
 {
     private int _x;
     public int X 
@@ -34,13 +34,15 @@ public class RollTest : MonoBehaviour
     }
     [SerializeField] private int _currentRandomNumber;
     [SerializeField] private int _total;
-    [SerializeField] private TMP_Text _riceText;
+    [SerializeField] private TMP_Text _diceText;
     [SerializeField] private TMP_Text _currentText;
     [SerializeField] private int _buttonCount;
+    [SerializeField] private string[] _xDice = new string[3];
+    [SerializeField] private string[] _yDice = new string[3];
 
     private void Update()
     {
-        _riceText.text = $"X: {X} | Y: {Y}";
+        _diceText.text = $"X: {X} | Y: {Y}";
     }
 
     public void SetRoll()
@@ -57,7 +59,13 @@ public class RollTest : MonoBehaviour
                 _total = 0;
                 break;
             case 3:
-                // Sahne geçişi
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<Transporting>().Move();
+                _total = 0;
+                _buttonCount = 0;
+                break;
+            default:
+                _buttonCount = 0;
+                _total = 0;
                 break;
         }
     }
@@ -66,6 +74,10 @@ public class RollTest : MonoBehaviour
     {
         if(X == 0)
         {
+            if(EventSystem.current.currentSelectedGameObject.name == _yDice[0] || EventSystem.current.currentSelectedGameObject.name == _yDice[1] || EventSystem.current.currentSelectedGameObject.name == _yDice[2])
+            {
+                return;
+            }
             _currentRandomNumber = Random.Range(1,System.Convert.ToInt32(EventSystem.current.currentSelectedGameObject.name));
             _total = _total + _currentRandomNumber <= 20 ? _total += _currentRandomNumber : X = _total;
             if(X != 0)
@@ -76,6 +88,10 @@ public class RollTest : MonoBehaviour
         }
         else if(Y == 0)
         {
+            if(EventSystem.current.currentSelectedGameObject.name == _xDice[0] || EventSystem.current.currentSelectedGameObject.name == _xDice[1] || EventSystem.current.currentSelectedGameObject.name == _xDice[2])
+            {
+                return;
+            }
             _currentRandomNumber = Random.Range(1,System.Convert.ToInt32(EventSystem.current.currentSelectedGameObject.name));
             _total = _total + _currentRandomNumber <= 20 ? _total += _currentRandomNumber : Y = _total;
             if(Y != 0)
@@ -87,4 +103,3 @@ public class RollTest : MonoBehaviour
         _currentText.text = $"X : {System.Convert.ToString(_buttonCount == 0 ? _total : X)} | Y : {System.Convert.ToString(_buttonCount == 1 ? _total : Y)}";
     }
 }
-
