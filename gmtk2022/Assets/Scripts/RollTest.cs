@@ -11,20 +11,46 @@ public class RollTest : MonoBehaviour
     public int sides;
     public int rollValue;
     public static int toplam;
+    private static int x=20;
+    private float y;
+    public GameObject enableGameObject;
     public void setRandomtoRollValue()
     {
         rollValue = UnityEngine.Random.Range(1, sides + 1);
     }
+
     public void Roll()
     {
-        setRandomtoRollValue();
-        TotalValue();
-        UpdateText();
+        
+        if (toplam < 20 )
+        {
+            
+            if (sides >x)
+            {
+                Debug.Log("yok");
+                texts.text = "X";
+
+            }
+            else
+            {
+                enableGameObject.SetActive(true);
+                setRandomtoRollValue();
+                x = x - rollValue; 
+                TotalValue();
+                UpdateText();
+            }
+        }
+        else
+        {
+            Debug.Log("yok");
+            texts.text = "X";
+        }
+        
+        
     }
     public int TotalValue()
     {
         toplam += rollValue;
-        Debug.Log(toplam);
         return toplam;
     }
     private void UpdateText()
